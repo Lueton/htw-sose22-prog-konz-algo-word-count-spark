@@ -1,3 +1,6 @@
-/target/**
-/texts/**
-/output/**
+texts
+output
+.bsp
+.idea
+/project/target
+target
