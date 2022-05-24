@@ -6,3 +6,6 @@ lazy val root = (project in file("."))
   .settings(
     name := "htw-sose22-prog-konz-algo-word-count-spark"
   )
+
+// https://mvnrepository.com/artifact/org.apache.spark/spark-core
+libraryDependencies += "org.apache.spark" %% "spark-core" % "3.2.1"
