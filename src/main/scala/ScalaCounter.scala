@@ -26,8 +26,6 @@ object ScalaCounter extends Counter {
 
   def readFiles () : RDD[(String, String)] = {
     val files = sc.wholeTextFiles(getClass.getResource("/texts").getPath + "/*")
-     val e = files.filter((file) => file._1.contains(".txt")).cache()
-    println(e.count)
-    e
+    files.filter((file) => file._1.contains(".txt")).cache()
   }
 }

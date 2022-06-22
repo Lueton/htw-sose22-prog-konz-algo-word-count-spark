@@ -4,8 +4,8 @@ object Main {
   def main(args: Array[String]): Unit = {
 
     val t0 = System.nanoTime
-    println("Result (native-all): " + TimeUnit.NANOSECONDS.toSeconds(System.nanoTime - t0) + "s")
     val resultAllNative = NativeCounter.countWords(10)
+    println("Result (native-all): " + TimeUnit.NANOSECONDS.toSeconds(System.nanoTime - t0) + "s")
     resultAllNative.zipWithIndex.foreach { case (item, index) =>
       println("" + (index + 1) + ". " + item._1 + " (" + item._2 + "x)")
     }
