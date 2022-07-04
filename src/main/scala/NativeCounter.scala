@@ -25,7 +25,9 @@ object NativeCounter extends Counter {
     }).toMap
   }
 
-  def index(array: Array[File], filesCount: Int): List[(String, Int)] = array.zipWithIndex.flatMap(x => count(x._1, x._2, filesCount)).groupBy(_._1).mapValues(_.map(_._2).sum).toList
+  def index(array: Array[File], filesCount: Int): List[(String, Int)] = array.zipWithIndex
+    .flatMap(x => count(x._1, x._2, filesCount)).groupBy(_._1).transform((x, y) => y.map(_._2).sum).toList
+    //mapValues(_.map(_._2).sum).toList
 
   def getRecursiveListFiles(f: File): Array[File] = {
     val these = f.listFiles

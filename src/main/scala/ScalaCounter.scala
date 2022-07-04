@@ -11,15 +11,17 @@ object ScalaCounter extends Counter {
   override def countWords(limit: Int = 10): List[(String, Int)] = {
     val outputPath = "output/allTexts"
     FileUtils.deleteQuietly(new File(outputPath))
-    count(readFiles(), limit).repartition(1).saveAsTextFile(outputPath)
-    count(readFiles(), limit).collect().toList
+    val counted = count(readFiles(), limit).cache()
+    counted.repartition(1).saveAsTextFile(outputPath)
+    counted.collect().toList
   }
 
   override def countWordsByLanguage(limit: Int = 10): Map[String, List[(String, Int)]] = {
     val outputPath = "output/sortedByLanguage"
     FileUtils.deleteQuietly(new File(outputPath))
     val textFiles = readFiles().map(x => (x._1.split("/").dropRight(1).last, x._2)).cache()
-    val languages = textFiles.map(x => x._1).distinct.collect
+    val languages = textFiles.map(x => x._1).distinct.collect()
+    //val rddLanguages = languages.map(l => (l, count(textFiles.filter(_._1.contains(l)), limit)))
     val mappedLanguages = languages.map(l => (l, count(textFiles.filter(_._1.contains(l)), limit).collect().toList)).toMap
     sc.parallelize(mappedLanguages.toSeq).repartition(1).saveAsTextFile(outputPath)
     mappedLanguages
